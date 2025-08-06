@@ -1,5 +1,3 @@
-// store.js
-
 import { create } from "zustand";
 import {
   addEdge,
@@ -12,8 +10,12 @@ export const useStore = create((set, get) => ({
   nodes: [],
   edges: [],
   theme: "light",
+  isModalOpen: false,
+  modalData: {},
   toggleTheme: () =>
-    set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })), 
+    set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
+  openModal: (data) => set({ isModalOpen: true, modalData: data }),
+  closeModal: () => set({ isModalOpen: false }),
   getNodeID: (type) => {
     const newIDs = { ...get().nodeIDs };
     if (newIDs[type] === undefined) {

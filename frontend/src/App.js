@@ -4,6 +4,7 @@ import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { RightSidebar } from './rightSidebar';
 import { ReactFlowProvider } from 'reactflow';
+import { ResultModal } from './resultModal';
 
 const selector = (state) => ({
   theme: state.theme,
@@ -54,6 +55,7 @@ function App() {
         <div style={rightSidebarStyle}>
           <RightSidebar />
         </div>
+        <ResultModal />
       </div>
     </ReactFlowProvider>
   );

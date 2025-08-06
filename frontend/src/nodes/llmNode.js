@@ -1,21 +1,18 @@
-import { Position } from 'reactflow';
 import { BaseNode } from './baseNode';
+import { FormField } from '../formField';
 
 export const LLMNode = ({ id, data }) => {
 
-  const llmData = {
+  const nodeData = {
     title: 'LLM',
     content: (
-      <span style={{ fontFamily: 'Arial, sans-serif' }}>This is a LLM.</span>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <FormField label="System" handleId={`${id}-system`} hasTarget={true} />
+        <FormField label="Prompt" handleId={`${id}-prompt`} hasTarget={true} />
+        <FormField label="Response" handleId={`${id}-response`} hasSource={true} />
+      </div>
     ),
-    handles: [
-      { type: 'target', position: Position.Left, id: `${id}-system`, style: { top: '33%' } },
-      { type: 'target', position: Position.Left, id: `${id}-prompt`, style: { top: '66%' } },
-      { type: 'source', position: Position.Right, id: `${id}-response` },
-    ]
   };
 
-  return (
-    <BaseNode id={id} data={llmData} />
-  );
+  return (<BaseNode id={id} data={nodeData} />);
 };

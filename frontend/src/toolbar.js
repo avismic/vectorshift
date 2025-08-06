@@ -1,4 +1,3 @@
-// frontend/src/toolbar.js
 import { DraggableNode } from './draggableNode';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
@@ -36,6 +35,8 @@ export const PipelineToolbar = () => {
         <DraggableNode type='llm' label='LLM' />
         <DraggableNode type='customOutput' label='Output' />
         <DraggableNode type='text' label='Text' />
+        <DraggableNode type='restApi' label='REST API' />
+        <DraggableNode type='showText' label='Show Text' />
       </div>
       <button onClick={toggleTheme} style={buttonStyle}>
         Toggle to {theme === 'light' ? 'Dark' : 'Light'} Mode
