@@ -1,18 +1,101 @@
-import { BaseNode } from './baseNode';
-import { FormField } from '../formField';
+// frontend/src/nodes/llmNode.js
+import { useState, useEffect } from "react";
+import { BaseNode } from "./baseNode";
+import { FormField } from "../formField";
+import { useStore } from "../store";
+
+const variableRegex = /\{\{([a-zA-Z0-9_]+)\}\}/g;
 
 export const LLMNode = ({ id, data }) => {
+  const { updateNodeData } = useStore();
+  const [prompt, setPrompt] = useState(
+    data?.prompt || "I am {{age}} years old"
+  );
+  const [variables, setVariables] = useState([]);
 
-  const nodeData = {
-    title: 'LLM',
-    content: (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <FormField label="System" handleId={`${id}-system`} hasTarget={true} />
-        <FormField label="Prompt" handleId={`${id}-prompt`} hasTarget={true} />
-        <FormField label="Response" handleId={`${id}-response`} hasSource={true} />
-      </div>
-    ),
+  // Extract variables on-the-fly and push the prompt into node.data
+  useEffect(() => {
+    const vars = new Set();
+    let match;
+    while ((match = variableRegex.exec(prompt)) !== null) {
+      vars.add(match[1]);
+    }
+    setVariables(Array.from(vars));
+    updateNodeData(id, { prompt });
+  }, [prompt, id, updateNodeData]);
+
+  const textareaStyle = {
+    background: "#eee",
+    color: "#000",
+    borderRadius: "4px",
+    border: "1px solid #777",
+    padding: "5px",
+    width: "100%",
+    boxSizing: "border-box",
+    resize: "vertical",
+    minHeight: "60px",
   };
 
-  return (<BaseNode id={id} data={nodeData} />);
+  const inputStyle = {
+    background: "#eee",
+    color: "#000",
+    borderRadius: "4px",
+    border: "1px solid #777",
+    padding: "5px",
+    width: "100%",
+    boxSizing: "border-box",
+  };
+
+  return (
+    <BaseNode
+      id={id}
+      data={{
+        title: "LLM",
+        content: (
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
+            {/* Prompt template */}
+            <div>
+              <FormField
+                label="Prompt"
+                handleId={`${id}-prompt`}
+                hasTarget={true}
+              />
+              <textarea
+                defaultValue={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                style={textareaStyle}
+              />
+            </div>
+
+            {/* Variable inputs */}
+            {variables.map((varName) => (
+              <div key={varName}>
+                <FormField
+                  label={varName}
+                  handleId={`${id}-${varName}`}
+                  hasTarget={true}
+                />
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    updateNodeData(id, { [varName]: e.target.value })
+                  }
+                  style={inputStyle}
+                />
+              </div>
+            ))}
+
+            {/* Output port */}
+            <FormField
+              label="Output"
+              handleId={`${id}-output`}
+              hasSource={true}
+            />
+          </div>
+        ),
+      }}
+    />
+  );
 };

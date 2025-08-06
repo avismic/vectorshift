@@ -1,0 +1,10 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.env
+.env.*
+# dotenv might create .env.local etc.
+# local virtualenv
+venv/
+# IDE files
+.vscode/
