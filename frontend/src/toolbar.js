@@ -32,7 +32,7 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
     color: "white",
     border: "none",
     cursor: "pointer",
-    border:'',
+    border: "",
   };
 
   return (
@@ -60,28 +60,30 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
         {collapsed ? "›" : "‹"}
       </button>
 
-      <h3 style={{ textAlign: "center", marginTop: "10px" }}>Nodes</h3>
       {!collapsed && (
-        <div
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <DraggableNode type="customInput" label="Input" />
-          <DraggableNode type="llm" label="LLM" />
-          <DraggableNode type="customOutput" label="Output" />
-          <DraggableNode type="text" label="Text" />
-          <DraggableNode type="restApi" label="REST API" />
-          <DraggableNode type="showText" label="Show Text" />
-        </div>
+        <>
+          <h3 style={{ textAlign: "center", marginTop: "10px" }}>Nodes</h3>
+          <div
+            style={{
+              marginTop: "20px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "15px",
+            }}
+          >
+            <DraggableNode type="customInput" label="Input" />
+            <DraggableNode type="llm" label="LLM" />
+            <DraggableNode type="customOutput" label="Output" />
+            <DraggableNode type="text" label="Text" />
+            <DraggableNode type="restApi" label="REST API" />
+            <DraggableNode type="showText" label="Show Text" />
+          </div>
+        </>
       )}
-      <button onClick={toggleTheme} style={buttonStyle}>
+      {/* <button onClick={toggleTheme} style={buttonStyle}>
         Toggle to {theme === "light" ? "Dark" : "Light"} Mode
-      </button>
+      </button> */}
     </div>
   );
 };

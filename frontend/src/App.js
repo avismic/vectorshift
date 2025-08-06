@@ -44,7 +44,7 @@ function App() {
   };
 
   const rightSidebarStyle = {
-    width: "300px",
+    width: "350px",
     background: theme === "light" ? "#f0f0f0" : "#2a2a2a",
     borderLeft: "1px solid #444",
     flexShrink: 0,

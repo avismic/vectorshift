@@ -9,7 +9,7 @@ const variableRegex = /\{\{([a-zA-Z0-9_]+)\}\}/g;
 export const LLMNode = ({ id, data }) => {
   const { updateNodeData } = useStore();
   const [prompt, setPrompt] = useState(
-    data?.prompt || "I am {{age}} years old"
+    data?.prompt || "Describe {{topic}} in {{cLimit}} characters."
   );
   const [variables, setVariables] = useState([]);
 

@@ -1,4 +1,3 @@
-
 // src/store.js
 import { create } from "zustand";
 import {
@@ -21,11 +20,15 @@ function loadPersistedState() {
   } catch (err) {
     console.warn("Failed to load persisted flow state:", err);
   }
-  return { nodes: [], edges: [] };
+  return { nodes: [], edges: [], logs: [] };
 }
 
 export const useStore = create((set, get) => {
-  const { nodes: initNodes, edges: initEdges } = loadPersistedState();
+  const {
+    nodes: initNodes,
+    edges: initEdges,
+    logs: initLogs,
+  } = loadPersistedState();
 
   return {
     // Hydrate initial state
@@ -34,17 +37,34 @@ export const useStore = create((set, get) => {
     theme: "light",
     isModalOpen: false,
     modalData: {},
+    logs: initLogs,
 
     toggleTheme: () =>
       set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
     openModal: (data) => set({ isModalOpen: true, modalData: data }),
     closeModal: () => set({ isModalOpen: false }),
 
+    addLog: (message) => {
+      const now = new Date();
+      // Format timestamp to match your example: D:M:YYYY HH:MM:SS
+      const timestamp = `${now.getDate()}:${
+        now.getMonth() + 1
+      }:${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+      const logEntry = `[${timestamp}] ${message}`;
+      // Prepend new logs to the start of the array
+      set((state) => ({ logs: [logEntry, ...(state.logs|| [])] }));
+      get().persist();
+    },
+
     // Persist helper
     persist: () => {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ nodes: get().nodes, edges: get().edges })
+        JSON.stringify({
+          nodes: get().nodes,
+          edges: get().edges,
+          logs: get().logs,
+        })
       );
     },
 
@@ -67,6 +87,7 @@ export const useStore = create((set, get) => {
       return `${type}-${newIDs[type]}`;
     },
     addNode: (node) => {
+      get().addLog(`added ${node.type}`);
       set({ nodes: [...get().nodes, node] });
       get().persist();
     },
@@ -100,12 +121,26 @@ export const useStore = create((set, get) => {
       get().persist();
     },
     deleteNode: (nodeId) => {
+      const nodeToDelete = get().nodes.find((n) => n.id === nodeId);
+      if (nodeToDelete) {
+        get().addLog(`removed ${nodeToDelete.type}`); // <-- Add this log call
+      }
+
       const filteredNodes = get().nodes.filter((n) => n.id !== nodeId);
       const filteredEdges = get().edges.filter(
         (e) => e.source !== nodeId && e.target !== nodeId
       );
       set({ nodes: filteredNodes, edges: filteredEdges });
       get().persist();
+    },
+
+    resetCanvas: () => {
+      set({
+        nodes: [],
+        edges: [],
+        logs: [], // This will clear the logs
+      });
+      get().persist(); // This saves the empty canvas to local storage
     },
   };
 });
