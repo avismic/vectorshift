@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { FormField } from '../formField';
 import { BaseNode } from './baseNode';
+import { useStore } from '../store';
 
 const variableRegex = /\{\{([a-zA-Z0-9_]+)\}\}/g;
 
 export const TextNode = ({ id, data }) => {
-  const [currText, setCurrText] = useState('I am {{age}} years old');
+  const { updateNodeData } = useStore();
+  const [currText, setCurrText] = useState(data?.text || 'I am {{age}} years old');
   const [variables, setVariables] = useState([]);
 
   useEffect(() => {
@@ -15,7 +17,8 @@ export const TextNode = ({ id, data }) => {
       newVariables.add(match[1]);
     }
     setVariables(Array.from(newVariables));
-  }, [currText]);
+    updateNodeData(id, { text: currText });
+  }, [currText, id, updateNodeData]);
 
   const textareaStyle = {
     background: '#eee', 
@@ -29,33 +32,29 @@ export const TextNode = ({ id, data }) => {
     minHeight: '60px',
   };
 
-  const content = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-      <div>
-        <FormField label="input" handleId={`${id}-main`} hasTarget={true} hasSource={true} />
-        <textarea 
-          defaultValue={currText}
-          onChange={(e) => setCurrText(e.target.value)}
-          style={textareaStyle}
-        />
-      </div>
-      
-      {variables.map((variableName) => (
-        <div key={variableName}>
-          <FormField label={variableName} handleId={`${id}-${variableName}`} hasTarget={true} hasSource={true} />
+  return (
+    <BaseNode id={id} data={{ title: 'Text', content: (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div>
+          <FormField label="input" handleId={`${id}-main`} hasTarget={true} hasSource={true} />
           <textarea 
-            rows={1}
-            style={{ ...textareaStyle, minHeight: '20px' }}
+            defaultValue={currText}
+            onChange={(e) => setCurrText(e.target.value)}
+            style={textareaStyle}
           />
         </div>
-      ))}
-    </div>
+        
+        {variables.map((variableName) => (
+          <div key={variableName}>
+            <FormField label={variableName} handleId={`${id}-${variableName}`} hasTarget={true} hasSource={true} />
+            <textarea 
+              rows={1}
+              style={{ ...textareaStyle, minHeight: '20px' }}
+              onChange={(e) => updateNodeData(id, { [variableName]: e.target.value })}
+            />
+          </div>
+        ))}
+      </div>
+    )}} />
   );
-  
-  const nodeData = {
-    title: 'Text',
-    content: content,
-  };
-
-  return (<BaseNode id={id} data={nodeData} />);
 };

@@ -36,12 +36,10 @@ export const RightSidebar = () => {
 
   const handleStartClick = async () => {
     const { nodes, edges } = useStore.getState();
-    
     const pipelineDataForAnalysis = {
       nodes: nodes.map(node => ({ id: node.id, type: node.type })),
       edges: edges.map(edge => ({ id: edge.id, source: edge.source, target: edge.target })),
     };
-    
     const formData = new FormData();
     formData.append('pipeline', JSON.stringify(pipelineDataForAnalysis));
 
@@ -50,15 +48,12 @@ export const RightSidebar = () => {
         method: 'POST',
         body: formData,
       });
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const result = await response.json();
       openModal(result);
-      runFrontendPipeline(); 
-
+      runFrontendPipeline();
     } catch (error) {
       console.error('Error sending data to backend:', error);
       alert('Error: Could not connect to the backend. See console for details.');

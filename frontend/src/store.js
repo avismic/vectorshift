@@ -16,6 +16,7 @@ export const useStore = create((set, get) => ({
     set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
   openModal: (data) => set({ isModalOpen: true, modalData: data }),
   closeModal: () => set({ isModalOpen: false }),
+  setNodes: (nodes) => set({ nodes }),
   getNodeID: (type) => {
     const newIDs = { ...get().nodeIDs };
     if (newIDs[type] === undefined) {
@@ -53,13 +54,12 @@ export const useStore = create((set, get) => ({
       ),
     });
   },
-  updateNodeField: (nodeId, fieldName, fieldValue) => {
+  updateNodeData: (nodeId, newData) => {
     set({
       nodes: get().nodes.map((node) => {
         if (node.id === nodeId) {
-          node.data = { ...node.data, [fieldName]: fieldValue };
+          node.data = { ...node.data, ...newData };
         }
-
         return node;
       }),
     });
