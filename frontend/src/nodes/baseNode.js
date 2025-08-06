@@ -23,7 +23,7 @@ export const BaseNode = ({ id, data }) => {
 
   const headerStyles = {
     padding: '8px 10px',
-    borderBottom: '2px solid #8A2BE2',
+    borderBottom: '2px solid #8661ff',
     textAlign: 'center',
   };
 

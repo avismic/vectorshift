@@ -8,6 +8,7 @@ import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
 import { RestApiNode } from './nodes/restApiNode';
 import { ShowTextNode } from './nodes/showTextNode';
+import { JSONNode } from './nodes/jsonNode'; 
 import 'reactflow/dist/style.css';
 
 const gridSize = 20;
@@ -19,6 +20,7 @@ const nodeTypes = {
   text: TextNode,
   restApi: RestApiNode,
   showText: ShowTextNode,
+  json: JSONNode, 
 };
 
 const selector = (state) => ({

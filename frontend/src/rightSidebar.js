@@ -62,6 +62,7 @@ export const RightSidebar = () => {
     display: "flex",
     flexDirection: "column",
     height: "100%",
+    border:'solid #8661ff'
   };
   const logsContainerStyle = {
     flex: 1,
@@ -92,11 +93,12 @@ export const RightSidebar = () => {
     fontFamily: "monospace",
     overflowY: "auto",
     marginTop: "5px",
+    border:'solid #8661ff',
   };
   const minimapPlaceholderStyle = {
     height: "200px",
     flexShrink: 0,
-    borderTop: "1px solid #444", 
+    borderTop: "1px solid #8661ff", 
   };
 
   return (

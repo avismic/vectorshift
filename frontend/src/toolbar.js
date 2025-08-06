@@ -19,12 +19,13 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
     borderRadius: "5px",
     cursor: "pointer",
     marginTop: "20px",
+
   };
 
   const collapseBtnStyle = {
     position: "absolute",
     top: "8px",
-    right: "0px",
+    right: "4px",
     width: "30px",
     height: "30px",
     borderRadius: "30%",
@@ -32,7 +33,7 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
     color: "white",
     border: "none",
     cursor: "pointer",
-    border: "",
+    
   };
 
   return (
@@ -53,6 +54,7 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
         alignItems: "center",
         position: "relative",
         height: "100%",
+        border:'solid #8661ff',
       }}
     >
       {/* collapse/expand toggle */}
@@ -77,6 +79,7 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
             <DraggableNode type="customOutput" label="Output" />
             <DraggableNode type="text" label="Text" />
             <DraggableNode type="restApi" label="REST API" />
+            <DraggableNode type="json" label="JSON" /> 
             <DraggableNode type="showText" label="Show Text" />
           </div>
         </>
