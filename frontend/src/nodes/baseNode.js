@@ -3,10 +3,11 @@ import { shallow } from 'zustand/shallow';
 
 const selector = (state) => ({
   theme: state.theme,
+  deleteNode: state.deleteNode,
 });
 
 export const BaseNode = ({ id, data }) => {
-  const { theme } = useStore(selector, shallow);
+  const { theme, deleteNode } = useStore(selector, shallow);
 
   const nodeStyles = {
     minWidth: '250px',
@@ -17,6 +18,7 @@ export const BaseNode = ({ id, data }) => {
     fontFamily: 'Arial, sans-serif',
     display: 'flex',
     flexDirection: 'column',
+    position: 'relative',
   };
 
   const headerStyles = {
@@ -29,8 +31,29 @@ export const BaseNode = ({ id, data }) => {
     padding: '10px',
   };
 
+  const deleteButtonStyle = {
+    position: 'absolute',
+    top: '5px',
+    right: '5px',
+    width: '20px',
+    height: '20px',
+    background: theme === 'light' ? '#444' : '#ddd',
+    color: theme === 'light' ? '#fff' : '#000',
+    border: 'none',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '12px',
+    fontWeight: 'bold',
+  };
+
   return (
     <div style={nodeStyles}>
+      <button style={deleteButtonStyle} onClick={() => deleteNode(id)}>
+        X
+      </button>
       <div style={headerStyles}>
         <strong>{data.title || 'Node'}</strong>
       </div>

@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { BaseNode } from './baseNode';
 import { FormField } from '../formField';
+import { useStore } from '../store';
 
 export const InputNode = ({ id, data }) => {
+  const { updateNodeData } = useStore();
   const [currName, setCurrName] = useState('input_1');
   const [inputType, setInputType] = useState('Text');
+
+  const handleValueChange = (e) => {
+    updateNodeData(id, { value: e.target.value });
+  };
 
   const inputStyle = {
     background: '#eee', color: '#000', borderRadius: '4px',
@@ -30,6 +36,14 @@ export const InputNode = ({ id, data }) => {
             <option value="Text">Text</option>
             <option value="File">File</option>
           </select>
+        </div>
+        <div>
+          <FormField label="Value" handleId={`${id}-value`} hasSource={true} />
+          <textarea 
+            rows={3}
+            style={{ ...inputStyle, resize: 'vertical' }}
+            onChange={handleValueChange}
+          />
         </div>
       </div>
     ),

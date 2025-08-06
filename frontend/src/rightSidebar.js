@@ -1,62 +1,54 @@
 import { useCallback } from 'react';
-import { MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 
 const selector = (state) => ({
   theme: state.theme,
   openModal: state.openModal,
+  setNodes: state.setNodes,
 });
 
 export const RightSidebar = () => {
-  const { theme, openModal } = useStore(selector, shallow);
-
-  const runFrontendPipeline = () => {
-    const { nodes, edges, updateNodeData } = useStore.getState();
-
-    edges.forEach(edge => {
-      const sourceNode = nodes.find(node => node.id === edge.source);
-      const targetNode = nodes.find(node => node.id === edge.target);
-
-      if (sourceNode && targetNode && sourceNode.type === 'text' && targetNode.type === 'showText') {
-        let resolvedText = sourceNode.data.text || '';
-        const variableRegex = /\{\{([a-zA-Z0-9_]+)\}\}/g;
-        
-        let match;
-        while ((match = variableRegex.exec(resolvedText)) !== null) {
-          const variableName = match[1];
-          const variableValue = sourceNode.data[variableName] || '';
-          resolvedText = resolvedText.replace(new RegExp(`\\{\\{${variableName}\\}\\}`, 'g'), variableValue);
-        }
-        
-        updateNodeData(targetNode.id, { value: resolvedText });
-      }
-    });
-  };
+  const { theme, openModal, setNodes } = useStore(selector, shallow);
 
   const handleStartClick = async () => {
     const { nodes, edges } = useStore.getState();
-    const pipelineDataForAnalysis = {
-      nodes: nodes.map(node => ({ id: node.id, type: node.type })),
-      edges: edges.map(edge => ({ id: edge.id, source: edge.source, target: edge.target })),
+    const pipelineData = {
+      nodes: nodes,
+      edges: edges,
     };
+    
     const formData = new FormData();
-    formData.append('pipeline', JSON.stringify(pipelineDataForAnalysis));
+    formData.append('pipeline', JSON.stringify(pipelineData));
 
     try {
-      const response = await fetch('http://localhost:8000/pipelines/parse', {
+      const analysisResponse = await fetch('http://localhost:8000/pipelines/parse', {
         method: 'POST',
         body: formData,
       });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+
+      if (!analysisResponse.ok) {
+        throw new Error(`HTTP error! status: ${analysisResponse.status}`);
       }
-      const result = await response.json();
-      openModal(result);
-      runFrontendPipeline();
+
+      const analysisResult = await analysisResponse.json();
+      openModal(analysisResult);
+
+      const runResponse = await fetch('http://localhost:8000/pipelines/run', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!runResponse.ok) {
+        throw new Error(`HTTP error! status: ${runResponse.status}`);
+      }
+      
+      const runResult = await runResponse.json();
+      setNodes(runResult.nodes);
+
     } catch (error) {
-      console.error('Error sending data to backend:', error);
-      alert('Error: Could not connect to the backend. See console for details.');
+      console.error('Error during pipeline execution:', error);
+      alert('An error occurred. See console for details.');
     }
   };
   
@@ -81,9 +73,6 @@ export const RightSidebar = () => {
   const minimapPlaceholderStyle = {
     height: '200px', flexShrink: 0, borderTop: '1px solid #444',
   };
-  const nodeColor = useCallback((node) => {
-    return theme === 'light' ? '#2D2D2D' : '#FFFFFF';
-  }, [theme]);
 
   return (
     <div style={sidebarStyle}>
@@ -97,7 +86,6 @@ export const RightSidebar = () => {
         <div style={logsDisplayBoxStyle}></div>
       </div>
       <div style={minimapPlaceholderStyle}>
-        <MiniMap nodeColor={nodeColor} />
       </div>
     </div>
   );
