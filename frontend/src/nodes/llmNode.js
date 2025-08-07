@@ -1,4 +1,3 @@
-// frontend/src/nodes/llmNode.js
 import { useState, useEffect } from "react";
 import { BaseNode } from "./baseNode";
 import { FormField } from "../formField";
@@ -13,7 +12,6 @@ export const LLMNode = ({ id, data }) => {
   );
   const [variables, setVariables] = useState([]);
 
-  // Extract variables on-the-fly and push the prompt into node.data
   useEffect(() => {
     const vars = new Set();
     let match;
@@ -32,7 +30,7 @@ export const LLMNode = ({ id, data }) => {
     padding: "5px",
     width: "100%",
     boxSizing: "border-box",
-    resize: "vertical",
+    resize: "both",
     minHeight: "60px",
   };
 
@@ -55,7 +53,6 @@ export const LLMNode = ({ id, data }) => {
           <div
             style={{ display: "flex", flexDirection: "column", gap: "10px" }}
           >
-            {/* Prompt template */}
             <div>
               <FormField
                 label="Prompt"
@@ -69,7 +66,6 @@ export const LLMNode = ({ id, data }) => {
               />
             </div>
 
-            {/* Variable inputs */}
             {variables.map((varName) => (
               <div key={varName}>
                 <FormField
@@ -87,7 +83,6 @@ export const LLMNode = ({ id, data }) => {
               </div>
             ))}
 
-            {/* Output port */}
             <FormField
               label="Output"
               handleId={`${id}-output`}

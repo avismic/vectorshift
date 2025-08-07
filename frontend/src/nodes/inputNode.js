@@ -41,7 +41,7 @@ export const InputNode = ({ id, data }) => {
           <FormField label="Value" handleId={`${id}-value`} hasSource={true} />
           <textarea 
             rows={3}
-            style={{ ...inputStyle, resize: 'vertical' }}
+            style={{ ...inputStyle, resize: 'both' }}
             onChange={handleValueChange}
           />
         </div>

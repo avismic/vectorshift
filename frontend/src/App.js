@@ -1,4 +1,3 @@
-// import { PipelineToolbar } from "./toolbar";
 import React, { useState } from "react";
 import { PipelineToolbar } from "./toolbar";
 import { PipelineUI } from "./ui";
@@ -53,10 +52,6 @@ function App() {
   return (
     <ReactFlowProvider>
       <div style={appStyle}>
-        {/* <div style={leftSidebarStyle}>
-          <PipelineToolbar />
-        </div> */}
-
         <div style={leftSidebarStyle}>
           <PipelineToolbar
             collapsed={toolbarCollapsed}

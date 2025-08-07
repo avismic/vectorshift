@@ -109,7 +109,6 @@ export const RightSidebar = () => {
           <button style={buttonStyle} onClick={handleStartClick}>
             ▶
           </button>
-          {/* <button style={buttonStyle}>⏸</button> */}
           <button
             style={buttonStyle}
             onClick={toggleTheme}

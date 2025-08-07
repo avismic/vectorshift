@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'; // 1. Import useRef
 import { FormField } from '../formField';
 import { BaseNode } from './baseNode';
 import { useStore } from '../store';
@@ -9,6 +9,16 @@ export const TextNode = ({ id, data }) => {
   const { updateNodeData } = useStore();
   const [currText, setCurrText] = useState(data?.text || 'I am {{age}} years old');
   const [variables, setVariables] = useState([]);
+  const mainTextareaRef = useRef(null); // 2. Create a ref for the main textarea
+
+  // This function will handle resizing the textarea
+  const autoResizeTextarea = () => {
+    const textarea = mainTextareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // Reset height to shrink if needed
+      textarea.style.height = `${textarea.scrollHeight}px`; // Set height to content
+    }
+  };
 
   useEffect(() => {
     const newVariables = new Set();
@@ -18,7 +28,15 @@ export const TextNode = ({ id, data }) => {
     }
     setVariables(Array.from(newVariables));
     updateNodeData(id, { text: currText });
+
+    // 4. Trigger resize whenever text changes
+    autoResizeTextarea(); 
   }, [currText, id, updateNodeData]);
+
+  // 3. Handle text change and trigger resize
+  const handleTextChange = (e) => {
+    setCurrText(e.target.value);
+  };
 
   const textareaStyle = {
     background: '#eee', 
@@ -28,8 +46,9 @@ export const TextNode = ({ id, data }) => {
     padding: '5px', 
     width: '100%',
     boxSizing: 'border-box',
-    resize: 'vertical',
+    // resize: 'vertical', // 5. Removed manual resize
     minHeight: '60px',
+    overflowY: 'hidden', // Hide the scrollbar
   };
 
   return (
@@ -38,8 +57,9 @@ export const TextNode = ({ id, data }) => {
         <div>
           <FormField label="input" handleId={`${id}-main`} hasTarget={true} hasSource={true} />
           <textarea 
-            defaultValue={currText}
-            onChange={(e) => setCurrText(e.target.value)}
+            ref={mainTextareaRef} // 2. Attach the ref
+            value={currText} // Changed from defaultValue to value for better control
+            onChange={handleTextChange} // 3. Use the new handler
             style={textareaStyle}
           />
         </div>

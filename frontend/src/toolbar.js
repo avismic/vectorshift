@@ -37,15 +37,6 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
   };
 
   return (
-    // <div
-    //   style={{
-    //     padding: "10px",
-    //     display: "flex",
-    //     flexDirection: "column",
-    //     alignItems: "center",
-    //   }}
-    // >
-
     <div
       style={{
         padding: "10px",
@@ -57,7 +48,6 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
         border:'solid #8661ff',
       }}
     >
-      {/* collapse/expand toggle */}
       <button onClick={onToggleCollapse} style={collapseBtnStyle}>
         {collapsed ? "›" : "‹"}
       </button>
@@ -81,12 +71,14 @@ export const PipelineToolbar = ({ collapsed, onToggleCollapse }) => {
             <DraggableNode type="restApi" label="REST API" />
             <DraggableNode type="json" label="JSON" /> 
             <DraggableNode type="showText" label="Show Text" />
+            <DraggableNode type="conditional" label="Router" />
+            <DraggableNode type="changeCase" label="Change Case" />
+            <DraggableNode type="math" label="Math" /> 
+            <DraggableNode type="matrixMult" label="Matrix Multiply" />
+            <DraggableNode type="hash" label="Hash Text" />
           </div>
         </>
       )}
-      {/* <button onClick={toggleTheme} style={buttonStyle}>
-        Toggle to {theme === "light" ? "Dark" : "Light"} Mode
-      </button> */}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// src/store.js
 import { create } from "zustand";
 import {
   addEdge,
@@ -7,10 +6,8 @@ import {
   MarkerType,
 } from "reactflow";
 
-// Key under which we persist the graph
 const STORAGE_KEY = "flow-graph-v1";
 
-// Try to load persisted state, fallback to empty graph
 function loadPersistedState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -20,7 +17,7 @@ function loadPersistedState() {
   } catch (err) {
     console.warn("Failed to load persisted flow state:", err);
   }
-  return { nodes: [], edges: [], logs: [] };
+  return { nodes: [], edges: [], logs: [], theme: "light" };
 }
 
 export const useStore = create((set, get) => {
@@ -28,35 +25,35 @@ export const useStore = create((set, get) => {
     nodes: initNodes,
     edges: initEdges,
     logs: initLogs,
+    theme: initTheme,
   } = loadPersistedState();
 
   return {
-    // Hydrate initial state
     nodes: initNodes,
     edges: initEdges,
-    theme: "light",
+    theme: initTheme,
     isModalOpen: false,
     modalData: {},
     logs: initLogs,
 
-    toggleTheme: () =>
-      set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
+    toggleTheme: () => {
+      set((state) => ({ theme: state.theme === "light" ? "dark" : "light" }));
+      get().persist();
+    },
+
     openModal: (data) => set({ isModalOpen: true, modalData: data }),
     closeModal: () => set({ isModalOpen: false }),
 
     addLog: (message) => {
       const now = new Date();
-      // Format timestamp to match your example: D:M:YYYY HH:MM:SS
       const timestamp = `${now.getDate()}:${
         now.getMonth() + 1
       }:${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
       const logEntry = `[${timestamp}] ${message}`;
-      // Prepend new logs to the start of the array
-      set((state) => ({ logs: [logEntry, ...(state.logs|| [])] }));
+      set((state) => ({ logs: [logEntry, ...(state.logs || [])] }));
       get().persist();
     },
 
-    // Persist helper
     persist: () => {
       localStorage.setItem(
         STORAGE_KEY,
@@ -64,11 +61,11 @@ export const useStore = create((set, get) => {
           nodes: get().nodes,
           edges: get().edges,
           logs: get().logs,
+          theme: get().theme,
         })
       );
     },
 
-    // Core setters now persist after updating state
     setNodes: (nodes) => {
       set({ nodes });
       get().persist();
@@ -78,7 +75,6 @@ export const useStore = create((set, get) => {
       get().persist();
     },
 
-    // Other actions
     getNodeID: (type) => {
       const newIDs = { ...get().nodeIDs };
       if (newIDs[type] === undefined) newIDs[type] = 0;
@@ -123,7 +119,7 @@ export const useStore = create((set, get) => {
     deleteNode: (nodeId) => {
       const nodeToDelete = get().nodes.find((n) => n.id === nodeId);
       if (nodeToDelete) {
-        get().addLog(`removed ${nodeToDelete.type}`); // <-- Add this log call
+        get().addLog(`removed ${nodeToDelete.type}`);
       }
 
       const filteredNodes = get().nodes.filter((n) => n.id !== nodeId);
@@ -134,13 +130,32 @@ export const useStore = create((set, get) => {
       get().persist();
     },
 
+    duplicateNode: (nodeId) => {
+      const { nodes, getNodeID, addNode } = get();
+      const nodeToDuplicate = nodes.find((node) => node.id === nodeId);
+
+      if (!nodeToDuplicate) return;
+
+      const newNode = {
+        ...nodeToDuplicate,
+        id: getNodeID(nodeToDuplicate.type),
+        position: {
+          x: nodeToDuplicate.position.x + 30,
+          y: nodeToDuplicate.position.y + 30,
+        },
+        selected: false,
+      };
+
+      addNode(newNode);
+    },
+
     resetCanvas: () => {
       set({
         nodes: [],
         edges: [],
-        logs: [], // This will clear the logs
+        logs: [],
       });
-      get().persist(); // This saves the empty canvas to local storage
+      get().persist();
     },
   };
 });

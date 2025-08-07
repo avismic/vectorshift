@@ -9,6 +9,11 @@ import { TextNode } from './nodes/textNode';
 import { RestApiNode } from './nodes/restApiNode';
 import { ShowTextNode } from './nodes/showTextNode';
 import { JSONNode } from './nodes/jsonNode'; 
+import { ConditionalNode } from './nodes/conditionalNode';
+import { ChangeCaseNode } from './nodes/changeCaseNode';
+import { MathNode } from './nodes/mathNode';
+import { MatrixMultNode } from './nodes/matrixMultNode';
+import { HashNode } from './nodes/hashNode';
 import 'reactflow/dist/style.css';
 
 const gridSize = 20;
@@ -21,6 +26,11 @@ const nodeTypes = {
   restApi: RestApiNode,
   showText: ShowTextNode,
   json: JSONNode, 
+  conditional: ConditionalNode,
+  changeCase: ChangeCaseNode,
+  math: MathNode,
+  matrixMult: MatrixMultNode,
+  hash: HashNode, 
 };
 
 const selector = (state) => ({
