@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { BaseNode } from './baseNode';
 import { FormField } from '../formField';
 import { useStore } from '../store';
+import { textareaStyle, errorStyle } from './nodeStyles';
+
 
 export const JSONNode = ({ id, data }) => {
   const [keys, setKeys] = useState(data.keys || []);
   const [error, setError] = useState('');
   const { updateNodeData } = useStore();
-
   const handleTextChange = (e) => {
     const text = e.target.value;
     try {
@@ -17,9 +18,7 @@ export const JSONNode = ({ id, data }) => {
         updateNodeData(id, { keys: [] });
         return;
       }
-      
       const parsed = JSON.parse(text);
-      
       if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
         const newKeys = Object.keys(parsed);
         setKeys(newKeys);
@@ -36,32 +35,11 @@ export const JSONNode = ({ id, data }) => {
       updateNodeData(id, { keys: [] });
     }
   };
-
-  const textareaStyle = {
-    background: '#eee',
-    color: '#000',
-    borderRadius: '4px',
-    border: '1px solid #777',
-    padding: '8px',
-    width: '100%',
-    boxSizing: 'border-box',
-    resize: 'both',
-    minHeight: '100px',
-    fontFamily: 'monospace',
-  };
-
-  const errorStyle = {
-    color: 'red',
-    fontSize: '12px',
-    marginTop: '5px',
-  };
-
   const nodeData = {
     title: 'JSON Parser',
     content: (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <FormField label="Input" handleId={`${id}-input`} hasTarget={true} />
-
         <div>
           <label style={{ display: 'block', marginBottom: '5px', paddingLeft: '10px' }}>
             Sample JSON to generate outputs:
@@ -73,7 +51,6 @@ export const JSONNode = ({ id, data }) => {
           />
           {error && <div style={errorStyle}>{error}</div>}
         </div>
-
         {keys.map((key) => (
           <FormField
             key={key}

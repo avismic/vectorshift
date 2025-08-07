@@ -22,6 +22,16 @@ export const BaseNode = ({ id, data }) => {
     position: "relative",
   };
 
+  const inputStyle = {
+    background: "#eee",
+    color: "#000",
+    borderRadius: "4px",
+    border: "1px solid #777",
+    padding: "8px",
+    width: "100%",
+    boxSizing: "border-box",
+  };
+
   const headerStyles = {
     padding: "8px 10px",
     borderBottom: "2px solid #8661ff",

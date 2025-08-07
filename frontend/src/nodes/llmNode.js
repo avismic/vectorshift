@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BaseNode } from "./baseNode";
 import { FormField } from "../formField";
 import { useStore } from "../store";
+import { textareaStyle, inputStyle } from "./nodeStyles";
 
 const variableRegex = /\{\{([a-zA-Z0-9_]+)\}\}/g;
 
@@ -21,28 +22,6 @@ export const LLMNode = ({ id, data }) => {
     setVariables(Array.from(vars));
     updateNodeData(id, { prompt });
   }, [prompt, id, updateNodeData]);
-
-  const textareaStyle = {
-    background: "#eee",
-    color: "#000",
-    borderRadius: "4px",
-    border: "1px solid #777",
-    padding: "5px",
-    width: "100%",
-    boxSizing: "border-box",
-    resize: "both",
-    minHeight: "60px",
-  };
-
-  const inputStyle = {
-    background: "#eee",
-    color: "#000",
-    borderRadius: "4px",
-    border: "1px solid #777",
-    padding: "5px",
-    width: "100%",
-    boxSizing: "border-box",
-  };
 
   return (
     <BaseNode
@@ -82,7 +61,6 @@ export const LLMNode = ({ id, data }) => {
                 />
               </div>
             ))}
-
             <FormField
               label="Output"
               handleId={`${id}-output`}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { FormField } from "../formField";
 import { BaseNode } from "./baseNode";
 import { useStore } from "../store";
+import { textareaStyle } from "./nodeStyles";
 
 const variableRegex = /\{\{([a-zA-Z0-9_]+)\}\}/g;
 
@@ -12,7 +13,6 @@ export const TextNode = ({ id, data }) => {
   );
   const [variables, setVariables] = useState([]);
   const mainTextareaRef = useRef(null);
-
   const autoResizeTextarea = () => {
     const textarea = mainTextareaRef.current;
     if (textarea) {
@@ -29,24 +29,10 @@ export const TextNode = ({ id, data }) => {
     }
     setVariables(Array.from(newVariables));
     updateNodeData(id, { text: currText });
-
     autoResizeTextarea();
   }, [currText, id, updateNodeData]);
-
   const handleTextChange = (e) => {
     setCurrText(e.target.value);
-  };
-
-  const textareaStyle = {
-    background: "#eee",
-    color: "#000",
-    borderRadius: "4px",
-    border: "1px solid #777",
-    padding: "5px",
-    width: "100%",
-    boxSizing: "border-box",
-    minHeight: "60px",
-    overflowY: "hidden",
   };
 
   return (
@@ -72,7 +58,6 @@ export const TextNode = ({ id, data }) => {
                 style={textareaStyle}
               />
             </div>
-
             {variables.map((variableName) => (
               <div key={variableName}>
                 <FormField

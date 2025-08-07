@@ -2,10 +2,6 @@ import numpy as np
 import json
 
 def execute(node, nodes, edges):
-    """
-    Parses two matrix strings, multiplies them using numpy,
-    and returns the result as a string.
-    """
     data = node.get("data", {})
     
     matrix_a_str = data.get("matrix_a", "[]")

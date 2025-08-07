@@ -3,6 +3,7 @@ import { BaseNode } from "./baseNode";
 import { FormField } from "../formField";
 import { useStore } from "../store";
 import { shallow } from "zustand/shallow";
+import { textareaStyle, copyButtonStyle } from "./nodeStyles";
 
 export const ShowTextNode = ({ id, data }) => {
   const { value } = useStore(
@@ -13,52 +14,37 @@ export const ShowTextNode = ({ id, data }) => {
   );
 
   const [copied, setCopied] = useState(false);
-
   const handleCopy = () => {
-    const textToCopy = String(value || '');
+    const textToCopy = String(value || "");
     if (!textToCopy) return;
-
-    const ta = document.createElement('textarea');
+    const ta = document.createElement("textarea");
     ta.value = textToCopy;
-    ta.style.position = 'absolute';
-    ta.style.left = '-9999px';
+    ta.style.position = "absolute";
+    ta.style.left = "-9999px";
     document.body.appendChild(ta);
-    
+
     ta.select();
     try {
-      document.execCommand('copy');
+      document.execCommand("copy");
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); 
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error("Failed to copy text: ", err);
     }
-    
     document.body.removeChild(ta);
   };
 
-  const textareaStyle = {
-    background: "#eee",
-    color: "#000",
-    borderRadius: "4px",
-    border: "1px solid #777",
-    padding: "5px",
-    width: "100%",
-    boxSizing: "border-box",
-    resize: "both",
-    minHeight: "80px",
-  };
-
   const copyButtonStyle = {
-    width: '100%',
-    padding: '8px',
-    background: copied ? '#4CAF50' : '#8A2BE2', 
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginTop: '10px',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    transition: 'background-color 0.3s ease',
+    width: "100%",
+    padding: "8px",
+    background: copied ? "#4CAF50" : "#8A2BE2",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginTop: "10px",
+    fontSize: "14px",
+    fontWeight: "bold",
+    transition: "background-color 0.3s ease",
   };
 
   const nodeData = {
@@ -67,13 +53,8 @@ export const ShowTextNode = ({ id, data }) => {
       <div>
         <FormField label="input" handleId={`${id}-input`} hasTarget={true} />
         <textarea readOnly style={textareaStyle} value={value || ""} />
-        
-        <button
-          onClick={handleCopy}
-          style={copyButtonStyle}
-          disabled={!value} 
-        >
-          {copied ? 'Copied!' : 'Copy'}
+        <button onClick={handleCopy} style={copyButtonStyle} disabled={!value}>
+          {copied ? "Copied!" : "Copy"}
         </button>
       </div>
     ),
