@@ -1,13 +1,8 @@
 def execute(node, nodes, edges):
-    """
-    Performs a mathematical operation on two inputs, A and B,
-    read directly from the node's own data.
-    """
     data = node.get("data", {})
     
     operation = data.get("operation", "add")
     
-    # Safely get inputs A and B from the textboxes, defaulting to 0
     try:
         input_a = float(data.get("A", 0))
     except (ValueError, TypeError):
@@ -33,5 +28,4 @@ def execute(node, nodes, edges):
         else:
             result = 0
             print("  > Warning: Division by zero.")
-
     return {"value": result}
