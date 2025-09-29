@@ -4,8 +4,6 @@ from collections import deque
 from fastapi import FastAPI, Form
 from fastapi.staticfiles import StaticFiles
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
-
 from fastapi.middleware.cors import CORSMiddleware
 from nodes import text_node, input_node, llm_node, json_node, change_case_node, conditional_node, math_node, matrix_mult_node, hash_node
 
@@ -19,7 +17,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# simple health endpoint for Render and uptime checks
 @app.get("/health")
 def health():
     return {"status": "ok"}

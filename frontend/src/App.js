@@ -6,6 +6,12 @@ import { shallow } from "zustand/shallow";
 import { RightSidebar } from "./rightSidebar";
 import { ReactFlowProvider } from "reactflow";
 import { ResultModal } from "./resultModal";
+import {
+  appStyle,
+  leftSidebarStyle,
+  mainContentStyle,
+  rightSidebarStyle,
+} from "./nodes/nodeStyles";
 
 const selector = (state) => ({
   theme: state.theme,
@@ -13,46 +19,12 @@ const selector = (state) => ({
 
 function App() {
   const { theme } = useStore(selector, shallow);
-
   const [toolbarCollapsed, setToolbarCollapsed] = useState(false);
   const toggleToolbar = () => setToolbarCollapsed((c) => !c);
-
-  const appStyle = {
-    background: theme === "light" ? "#ffffff" : "#121212",
-    color: theme === "light" ? "#000000" : "#ffffff",
-    display: "flex",
-    flexDirection: "row",
-    height: "100vh",
-    width: "100vw",
-    overflow: "hidden",
-  };
-
-  const leftSidebarStyle = {
-    width: toolbarCollapsed ? "30px" : "200px",
-    overflow: "visible",
-    transition: "width 0.3s ease",
-    background: theme === "light" ? "#f0f0f0" : "#2a2a2a",
-    borderRight: "1px solid #444",
-    flexShrink: 0,
-  };
-
-  const mainContentStyle = {
-    flex: 1,
-    minWidth: 0,
-    position: "relative",
-  };
-
-  const rightSidebarStyle = {
-    width: "350px",
-    background: theme === "light" ? "#f0f0f0" : "#2a2a2a",
-    borderLeft: "1px solid #444",
-    flexShrink: 0,
-  };
-
   return (
     <ReactFlowProvider>
-      <div style={appStyle}>
-        <div style={leftSidebarStyle}>
+      <div style={appStyle(theme)}>
+        <div style={leftSidebarStyle(theme, toolbarCollapsed)}>
           <PipelineToolbar
             collapsed={toolbarCollapsed}
             onToggleCollapse={toggleToolbar}
@@ -62,7 +34,7 @@ function App() {
         <div style={mainContentStyle}>
           <PipelineUI />
         </div>
-        <div style={rightSidebarStyle}>
+        <div style={rightSidebarStyle(theme)}>
           <RightSidebar />
         </div>
         <ResultModal />

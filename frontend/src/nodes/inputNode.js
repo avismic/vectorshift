@@ -1,34 +1,32 @@
-import { GenericNode } from './genericNode';
+import { GenericNode } from "./genericNode";
 
 const inputNodeConfig = {
-  title: 'Input',
+  title: "Input",
   fields: [
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
-      defaultValue: 'input_1',
+      name: "name",
+      label: "Name",
+      type: "text",
+      defaultValue: "input_1",
     },
     {
-      name: 'inputType',
-      label: 'Type',
-      type: 'select',
-      defaultValue: 'Text',
+      name: "inputType",
+      label: "Type",
+      type: "select",
+      defaultValue: "Text",
       options: [
-        { value: 'Text', label: 'Text' },
-        { value: 'File', label: 'File' },
+        { value: "Text", label: "Text" },
+        { value: "File", label: "File" },
       ],
     },
     {
-      name: 'value',
-      label: 'Value',
-      type: 'textarea',
-      defaultValue: '',
+      name: "value",
+      label: "Value",
+      type: "textarea",
+      defaultValue: "",
     },
   ],
-  outputs: [
-    { id: 'value-output', label: 'Value' },
-  ],
+  outputs: [{ id: "value-output", label: "Value" }],
 };
 
 export const InputNode = ({ id, data }) => {

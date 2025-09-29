@@ -34,19 +34,6 @@ export const ShowTextNode = ({ id, data }) => {
     document.body.removeChild(ta);
   };
 
-  const copyButtonStyle = {
-    width: "100%",
-    padding: "8px",
-    background: copied ? "#4CAF50" : "#8A2BE2",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    marginTop: "10px",
-    fontSize: "14px",
-    fontWeight: "bold",
-    transition: "background-color 0.3s ease",
-  };
-
   const nodeData = {
     title: "Show Text",
     content: (

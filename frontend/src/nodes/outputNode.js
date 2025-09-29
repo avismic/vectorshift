@@ -1,25 +1,23 @@
-import { GenericNode } from './genericNode';
+import { GenericNode } from "./genericNode";
 
 const outputNodeConfig = {
-  title: 'Output',
-  inputs: [
-    { id: 'input', label: 'Input' },
-  ],
+  title: "Output",
+  inputs: [{ id: "input", label: "Input" }],
   fields: [
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
-      defaultValue: 'output_1',
+      name: "name",
+      label: "Name",
+      type: "text",
+      defaultValue: "output_1",
     },
     {
-      name: 'outputType',
-      label: 'Type',
-      type: 'select',
-      defaultValue: 'Text',
+      name: "outputType",
+      label: "Type",
+      type: "select",
+      defaultValue: "Text",
       options: [
-        { value: 'Text', label: 'Text' },
-        { value: 'Image', label: 'Image' },
+        { value: "Text", label: "Text" },
+        { value: "Image", label: "Image" },
       ],
     },
   ],

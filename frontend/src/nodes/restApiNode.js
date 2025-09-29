@@ -1,32 +1,30 @@
-import { GenericNode } from './genericNode';
+import { GenericNode } from "./genericNode";
 
 const restApiNodeConfig = {
-  title: 'REST API',
-  inputs: [
-    { id: 'input', label: 'Input' },
-  ],
+  title: "REST API",
+  inputs: [{ id: "input", label: "Input" }],
   fields: [
     {
-      name: 'url',
-      label: 'URL:',
-      type: 'text',
-      defaultValue: '',
+      name: "url",
+      label: "URL:",
+      type: "text",
+      defaultValue: "",
     },
     {
-      name: 'method',
-      label: 'Method:',
-      type: 'select',
-      defaultValue: 'GET',
+      name: "method",
+      label: "Method:",
+      type: "select",
+      defaultValue: "GET",
       options: [
-        { value: 'GET', label: 'GET' },
-        { value: 'POST', label: 'POST' },
-        { value: 'PUT', label: 'PUT' },
+        { value: "GET", label: "GET" },
+        { value: "POST", label: "POST" },
+        { value: "PUT", label: "PUT" },
       ],
     },
   ],
   outputs: [
-    { id: 'success', label: 'Success' },
-    { id: 'error', label: 'Error' },
+    { id: "success", label: "Success" },
+    { id: "error", label: "Error" },
   ],
 };
 export const RestApiNode = ({ id, data }) => {

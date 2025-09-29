@@ -1,6 +1,14 @@
 import { useCallback } from "react";
 import { useStore } from "./store";
 import { shallow } from "zustand/shallow";
+import {
+  sidebarStyle,
+  logsContainerStyle,
+  controlsStyle,
+  buttonStyle,
+  logsDisplayBoxStyle,
+  minimapPlaceholderStyle,
+} from "./nodes/nodeStyles";
 
 const selector = (state) => ({
   theme: state.theme,
@@ -58,66 +66,23 @@ export const RightSidebar = () => {
     }
   };
 
-  const sidebarStyle = {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    border:'solid #8661ff'
-  };
-  const logsContainerStyle = {
-    flex: 1,
-    padding: "10px",
-    display: "flex",
-    flexDirection: "column",
-    minHeight: 0,
-  };
-  const controlsStyle = {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "10px",
-  };
-  const buttonStyle = {
-    padding: "8px 12px",
-    fontSize: "16px",
-    cursor: "pointer",
-    border: "1px solid #555",
-    borderRadius: "5px",
-    background: theme === "light" ? "#e0e0e0" : "#333",
-    color: theme === "light" ? "#000" : "#fff",
-  };
-  const logsDisplayBoxStyle = {
-    flex: 1,
-    background: theme === "light" ? "#e0e0e0" : "#333",
-    borderRadius: "4px",
-    padding: "5px",
-    fontFamily: "monospace",
-    overflowY: "auto",
-    marginTop: "5px",
-    border:'solid #8661ff',
-  };
-  const minimapPlaceholderStyle = {
-    height: "200px",
-    flexShrink: 0,
-    borderTop: "1px solid #8661ff", 
-  };
-
   return (
     <div style={sidebarStyle}>
       <div style={logsContainerStyle}>
         <strong>Controls</strong>
         <div style={controlsStyle}>
-          <button style={buttonStyle} onClick={handleStartClick}>
+          <button style={buttonStyle(theme)} onClick={handleStartClick}>
             ▶
           </button>
           <button
-            style={buttonStyle}
+            style={buttonStyle(theme)}
             onClick={toggleTheme}
             title="Toggle Theme"
           >
             {theme === "light" ? "⏾" : "☀"}
           </button>
           <button
-            style={buttonStyle}
+            style={buttonStyle(theme)}
             onClick={resetCanvas}
             title="Reset Canvas"
           >
@@ -125,8 +90,8 @@ export const RightSidebar = () => {
           </button>
         </div>
         <strong>Logs</strong>
-        <div style={logsDisplayBoxStyle}>
-          {(logs|| []).map((log, index) => (
+        <div style={logsDisplayBoxStyle(theme)}>
+          {(logs || []).map((log, index) => (
             <div key={index}>{log}</div>
           ))}
         </div>
