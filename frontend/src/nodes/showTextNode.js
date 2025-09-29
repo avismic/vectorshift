@@ -40,7 +40,7 @@ export const ShowTextNode = ({ id, data }) => {
       <div>
         <FormField label="input" handleId={`${id}-input`} hasTarget={true} />
         <textarea readOnly style={textareaStyle} value={value || ""} />
-        <button onClick={handleCopy} style={copyButtonStyle} disabled={!value}>
+        <button onClick={handleCopy} style={copyButtonStyle(copied)} disabled={!value}>
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
